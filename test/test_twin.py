@@ -2,6 +2,7 @@ import pytest
 import twint
 import datetime
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 def test_twin_user_tweets():
@@ -12,12 +13,12 @@ def test_twin_user_tweets():
     tweets = {}
     c.Username = 'LMDShow'
     #Number of Tweets to pull (Increments of 20).
+    #c.Limit = 20
 
     c.lang = 'es'
     c.Store_object = True
     c.Store_json = tweets
     twint.run.Search(c)
-    print(tweets)
 
 
 def test_twin_user_tweets_last_week():
@@ -33,14 +34,13 @@ def test_twin_user_tweets_last_week():
     tweets_last_week = {}
     c.Username = 'LMDShow'
     #Number of Tweets to pull (Increments of 20).
-
+    #c.Limit = 20
     c.lang = 'es'
     c.Since = sinceDate
     c.Until = untilDate
     c.Store_object = True
     c.Store_json = tweets_last_week
     twint.run.Search(c)
-    print(tweets_last_week)
 
 
 def test_twin_user_tweets_by_keyword():
@@ -51,13 +51,13 @@ def test_twin_user_tweets_by_keyword():
     tweets_keyword = {}
     c.Username = 'LMDShow'
     #Number of Tweets to pull (Increments of 20).
+    #c.Limit = 20
 
     c.lang = 'es'
     c.Search = 'jugar'
     c.Store_object = True
     c.Store_json = tweets_keyword
     twint.run.Search(c)
-    print(tweets_keyword)
 
 
 def test_twin_user_information():
@@ -72,15 +72,19 @@ def test_twin_user_information():
     c.Store_object_tweets_list = bio
     c.User_full = True
     twint.run.Lookup(c)
-    print(bio)
 
 
 if __name__ == '__main__':
-    tic = time.perf_counter()
-    test_twin_user_tweets()
-    test_twin_user_tweets_last_week()
-    test_twin_user_tweets_by_keyword()
-    test_twin_user_information()
-    toc = time.perf_counter()
-    time = toc - tic
+    initTime = time.perf_counter()
+    tasks = [
+        test_twin_user_tweets, test_twin_user_tweets_last_week,
+        test_twin_user_tweets_by_keyword, test_twin_user_information
+    ]
+
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        tasks = [executor.submit(t) for t in tasks]
+        as_completed(tasks)
+
+    endTime = time.perf_counter()
+    time = initTime - endTime
     print(time)
