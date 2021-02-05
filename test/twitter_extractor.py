@@ -12,10 +12,8 @@ import json
 class twitterExtractor:
     """
 
-    Extracts data from src: http://www.albacete.es/es/noticias/noticias-en-portada?set_language=es
+    Extracts data from TWITTER by twin = https://github.com/twintproject/twint
     """
-    SOURCE = 'Extractor de tweets'
-
     def test_twin_user_tweets(self, username: str, lang: str, limit: int):
         """
         Get tweets for user and save it into Json format
