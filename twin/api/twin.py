@@ -6,13 +6,12 @@
 import datetime
 from flask_restx import Resource
 
-from coaps import config
-from coaps.run import api
-from coaps.core import cache, limiter
-from coaps.api.pagination_arguments import pagination_arguments_parser
-from coaps.utils import handle400error, handle404error, handle500error
+from twin import config
+from twin.run import api
+from twin.core import cache, limiter
+from twin.utils import handle400error, handle404error, handle500error
 
-from pruebasTwint.test.twitter_extractor import twitterExtractor
+from twin.twitter_extractor import twitterExtractor
 
 twin_ns = api.namespace('twin', description='Obtain information from Twitter.')
 

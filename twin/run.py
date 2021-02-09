@@ -8,10 +8,10 @@ from flask_cors import CORS
 from flask_talisman import Talisman
 from flask import Flask, Blueprint, redirect, request
 
-from test import config
-from test.api.v1 import api
-from test.core import cache, limiter
-from test.api.twin import twin_ns
+from twin import config
+from twin.api.v1 import api
+from twin.core import cache, limiter
+from twin.api.twin import twin_ns
 
 app = Flask(__name__)
 
@@ -28,7 +28,7 @@ def get_version():
 
 __version__ = get_version()
 
-namespaces = [covid_ns, topics_ns]
+namespaces = [twin_ns]
 
 
 @app.route('/')
@@ -69,7 +69,7 @@ def main():
     if config.USE_HTTPS:
         print(f'\tcert: {config.SSL_CERT}')
         print(f'\tkey: {config.SSL_KEY}')
-    print(f'Authors: {get_authors()}')
+
     print(f'Version: {get_version()}')
     print(f'Base URL: http://localhost:{config.PORT}{config.URL_PREFIX}')
     print(separator_str)
