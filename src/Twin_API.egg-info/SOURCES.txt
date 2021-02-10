@@ -1,8 +1,0 @@
-README.md
-setup.py
-Twin_API.egg-info/PKG-INFO
-Twin_API.egg-info/SOURCES.txt
-Twin_API.egg-info/dependency_links.txt
-Twin_API.egg-info/entry_points.txt
-Twin_API.egg-info/requires.txt
-Twin_API.egg-info/top_level.txt
