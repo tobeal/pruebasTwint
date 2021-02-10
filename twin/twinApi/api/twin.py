@@ -129,11 +129,40 @@ class GetUserMinLikesTweets(Resource):
         try:
             args = twint_argument_parser.parse_args()
             username = args['username']
+            minimum_likes = args['likes']
             lang = args['lang']
             limit = args['limit']
             twin_extractor = twitterExtractor()
             json_data = twin_extractor.test_twin_user_tweets_min_likes(
-                50, username, lang, limit)
+                minimum_likes, username, lang, limit)
+        except:
+            return handle500error(twin_ns)
+
+        if not json_data:
+            return handle404error(twin_ns, 'No data was found')
+
+        return json_data
+
+
+@twin_ns.route('/all/tweets_by_date')
+class GetTweetsByDateAndKeyword(Resource):
+    @api.response(400, 'Invalid parameters')
+    @api.expect(twint_argument_parser)
+    @api.response(404, 'Data not found')
+    @api.response(500, 'Unhandled errors')
+    def get(self):
+
+        try:
+            args = twint_argument_parser.parse_args()
+            username = args['username']
+            keyword = args['keyword']
+            from_date = args['from_date']
+            to_date = args['to_date']
+            lang = args['lang']
+            limit = args['limit']
+            twin_extractor = twitterExtractor()
+            json_data = twin_extractor.test_twin_user_tweets_by_date(
+                username, keyword, lang, limit, from_date, to_date)
         except:
             return handle500error(twin_ns)
 

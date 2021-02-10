@@ -29,7 +29,12 @@ twint_argument_parser.add_argument(
     required=False,
     default=20,
     help='Number of Tweets to pull (Increments of 20)..')
-
+twint_argument_parser.add_argument('likes',
+                                   location='args',
+                                   type=int,
+                                   required=False,
+                                   default=50,
+                                   help='Number of Minimum likes ')
 twint_argument_parser.add_argument(
     'lang',
     location='args',
@@ -38,4 +43,23 @@ twint_argument_parser.add_argument(
     default=None,
     help=
     "Language of the tweet to retrieve. The language must be ISO coded. For example, English code would be 'en'."
+)
+twint_argument_parser.add_argument(
+    'from_date',
+    location='args',
+    type=str,
+    required=False,
+    default=None,
+    help=
+    'The start date to retrieve tweets from. The date must be in ISO 8601 format YYYY-mm-dd.'
+)
+
+twint_argument_parser.add_argument(
+    'to_date',
+    location='args',
+    type=str,
+    required=False,
+    default=None,
+    help=
+    'The end date to retrieve tweets from. The date must be in ISO 8601 format YYYY-mm-dd.'
 )

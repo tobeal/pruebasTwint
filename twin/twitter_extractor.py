@@ -59,6 +59,60 @@ class twitterExtractor:
         Tweets_df = twint.storage.panda.Tweets_df
         return Tweets_df.to_dict(orient='records')
 
+    def test_twin_user_tweets_by_date(self, username: str, keyword: str,
+                                      lang: str, limit: int, from_date: str,
+                                      to_date: str):
+        """
+        Get tweets of the specific date for user and save it into Json format
+        Args:
+            username(:obj:`str`): the username used for searching tweets
+            keyword(:obj:`str`): the keyword used for searching tweets
+            lang(:obj:`str`): the language used
+            limit(:obj:`int`): number of Tweets to pull (Increments of 20).
+            from_date(:obj:`str`): Start date to seacrh tweets.
+            to_date(:obj:`str`): End date to saerch tweets.
+        """
+        date = datetime.datetime.now()
+        untilDate = date.strftime('%Y-%m-%d')
+        sinceDate = (
+            date +
+            datetime.timedelta(-date.weekday(), weeks=-1)).strftime('%Y-%m-%d')
+        c = twint.Config()
+        c.Username = username
+        #Number of Tweets to pull (Increments of 20).
+        c.Limit = limit
+        c.lang = lang
+        c.Search = keyword
+        c.Since = from_date
+        c.Until = to_date
+        c.Pandas = True
+        twint.run.Search(c)
+        Tweets_df = twint.storage.panda.Tweets_df
+        return Tweets_df.to_dict(orient='records')
+
+    def test_twin_all_tweets_by_date(self, keyword: str, lang: str, limit: int,
+                                     from_date: str, to_date: str):
+        """
+        Get tweets of the specific date for all and save it into Json format
+        Args:
+            keyword(:obj:`str`): the keyword used for searching tweets
+            lang(:obj:`str`): the language used
+            limit(:obj:`int`): number of Tweets to pull (Increments of 20).
+            from_date(:obj:`str`): Start date to seacrh tweets.
+            to_date(:obj:`str`): End date to saerch tweets.
+        """
+        c = twint.Config()
+        c.Search = keyword
+        #Number of Tweets to pull (Increments of 20).
+        c.Limit = limit
+        c.lang = lang
+        c.Since = from_date
+        c.Until = to_date
+        c.Pandas = True
+        twint.run.Search(c)
+        Tweets_df = twint.storage.panda.Tweets_df
+        return Tweets_df.to_dict(orient='records')
+
     def test_twin_user_tweets_by_keyword(self, keyword: str, username: str,
                                          lang: str, limit: int):
         """
